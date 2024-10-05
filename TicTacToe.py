@@ -69,4 +69,5 @@ def jugada():
             index,pos,intento = check(lugar)
     
     #4. Modificará el resultado cuando salga del while
-    resultado[index][pos]= varJugador
+    resultado[index][pos]= varJugador 
+#falta check
