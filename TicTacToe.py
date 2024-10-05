@@ -6,7 +6,7 @@ resultado = []
 jugada = 0
 
 
-# 1.Pinta tablero Inicial: Crea Tabla resultados
+# 1.Pinta tablero Inicial: Crea Tabla resultado
 def inicio():  
    contador = 0  
    for i in range(3):
@@ -68,6 +68,73 @@ def jugada():
             print(f"el pc eligió {lugar}")
             index,pos,intento = check(lugar)
     
-    #4. Modificará el resultado cuando salga del while
+    #3.2. Modificará el resultado cuando salga del while
     resultado[index][pos]= varJugador 
 #falta check
+
+#4. Evaluación de la Jugada (Ver si existe un ganador)
+def evaluacion():
+    #4.1 Análisis Horizontal
+    contador = 0
+    for i in range(len(resultado)): # Recorremos cada fila
+        for j in range(len(resultado[i])): # Recorremos cada columna
+            if resultado[i][j] == varJugador: #analisis de fila
+                contador += 1
+                print(f"Jugada Horizontal:{contador}")
+            
+            if contador == 3:
+                winner = "¡Has Ganado!"
+                return winner #Sale de def evaluacion
+            
+        contador = 0 #esto analizara la proxima fila 
+
+    
+    #4.2 Análisis Vertical
+    contador = 0
+    for i in range(len(resultado)): # Recorremos cada fila por índice
+        for j in range(len(resultado[i])):# 3 casillas horizontales
+            if resultado[j][i] == varJugador: #resultado[0][0], resultado[1]][0], resultado[2][0] tienen x
+                contador +=1
+                print(f"Jugada Vertical:{contador}")
+
+            if contador == 3:
+                winner = "¡Has Ganado!"
+                return winner #Sale de def evaluacion
+            
+        contador = 0 #esto analizara la proxima fila 
+
+    #4.3 Análisis Diagonal1 mas parecidas entre ellas
+    contador = 0
+    for i in range(len(resultado)): # Recorremos cada fila por índice
+        for j in range(len(resultado[i])):# osea 3 casillas horizontales
+            if (i==j) and (resultado[i][j] == varJugador): #resultado[0][0], resultado[1]][1], resultado[2][2] tienen x
+                contador +=1
+                print(f"Jugada Diagonal1:{contador}")
+                
+                if contador == 3:
+                    winner = "¡Has Ganado!"
+                    return winner #Sale de def evaluacion
+            
+    #4.4 Análisis Diagonal2 mas parecidas entre ellas y LA HORIZONTAL Y VERTICAL JUNTAS
+    contador = 0
+    for i in range(len(resultado)): # Recorremos cada fila por índice
+        for j in range(len(resultado[i])):# osea 3 casillas horizontales
+            if (i+j == 2) and (resultado[i][j] == "x"): #resultado[0][0], resultado[1]][1], resultado[2][2] tienen x
+                contador +=1
+                print(f"Jugada Diagonal2:{contador}")
+                
+                if contador == 3:
+                    winner = "¡Has Ganado!"
+                    return winner #Sale de def evaluacion
+                
+    #4.5 Chequedo de Empate
+    for fila in range(len(resultado)): # Recorremos cada fila por índice
+        for col in range(len(resultado[fila])):# osea 3 casillas horizontales
+            if col != "X" and col != "O" #Si es un número
+                winner = "nadie"
+                return winner #"nadie"
+    
+    winner = "Empate"        
+    return winner
+        
+        
