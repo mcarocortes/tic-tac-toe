@@ -1,23 +1,19 @@
 from random import randrange
-winner = "Nadie"
 resultado = []
-lugar = 5
 
-# 1.Pinta tablero Inicial: Crea Tabla resultado
+# 1. Pinta tablero Inicial: Crea Tabla resultado
 def Inicio():
-   varJugador= "X"
-   contador = 0  
-   for i in range(3):
-        list=[]
+    contador = 0
+    for i in range(3):
+        list = []   #Creo una lista vacía
         for j in range(3):
             contador += 1
             if contador == 5:
-                list.append(varJugador)
+                list.append("X") #cuando sea 5 tendrá valor X
             else:
-              list.append(contador)
+                list.append(contador)
             if contador % 3 == 0:
-                resultado.append(list.copy())  # no queda referenciada
-
+                resultado.append(list.copy())  # no queda referenciada,al hacer copy
 
 # 2.Pinta Tablas nuevas despues de cada jugada
 def Pinta():
@@ -31,11 +27,10 @@ def Pinta():
 
 # 3.Aquí se pregunta al usuario la jugada y se evalua si se puede
 def Jugar(jugada):
-    global intento
+    global intento #se utiliza en f(x) internas
     intento = False
     jugada += 1
-
-    global varJugador
+    global varJugador # se utiliza en todo el juego
 
 
 
@@ -65,6 +60,8 @@ def Jugar(jugada):
     # 3.3 Modificará el resultado cuando salga del while
     resultado[indice][posicion] = varJugador
 
+
+
 #4. Evaluación de la Jugada (Ver si existe un ganador)
 def Evaluacion():
     #4.1 Análisis Horizontal
@@ -73,8 +70,7 @@ def Evaluacion():
         for j in range(len(resultado[i])): # Recorremos cada columna
             if resultado[i][j] == varJugador: #analisis de fila
                 contador += 1
-                print(f"Jugada Horizontal:{contador}")
-            
+
             if contador == 3:
                 winner = "Ganador"
                 return winner #Sale de def evaluacion
@@ -88,7 +84,6 @@ def Evaluacion():
         for j in range(len(resultado[i])):# 3 casillas horizontales
             if resultado[j][i] == varJugador: #resultado[0][0], resultado[1]][0], resultado[2][0] tienen x
                 contador +=1
-                print(f"Jugada Vertical:{contador}")
 
             if contador == 3:
                 winner = "Ganador"
@@ -102,7 +97,6 @@ def Evaluacion():
         for j in range(len(resultado[i])):# osea 3 casillas horizontales
             if (i==j) and (resultado[i][j] == varJugador): #resultado[0][0], resultado[1]][1], resultado[2][2] tienen x
                 contador +=1
-                print(f"Jugada Diagonal1:{contador}")
                 
                 if contador == 3:
                     winner = "Ganador"
@@ -114,7 +108,6 @@ def Evaluacion():
         for j in range(len(resultado[i])):# osea 3 casillas horizontales
             if (i+j == 2) and (resultado[i][j] == varJugador): #resultado[0][0], resultado[1]][1], resultado[2][2] tienen x
                 contador +=1
-                print(f"Jugada Diagonal2:{contador}")
                 
                 if contador == 3:
                     winner = "Ganador"
@@ -136,11 +129,9 @@ def Evaluacion():
 Inicio()
 Pinta()
 jugada = 1
-
-
+winner = "Nadie"
 
 while winner == "Nadie":
-
     Jugar(jugada)
     Pinta()
     winner = Evaluacion()
