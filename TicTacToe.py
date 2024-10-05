@@ -1,13 +1,13 @@
 from random import randrange
 varJugador = "X"
 lugar = 5
-winner = "nadie"
+winner = "Nadie"
 resultado = []
-jugada = 0
+
 
 
 # 1.Pinta tablero Inicial: Crea Tabla resultado
-def inicio():  
+def Inicio():  
    contador = 0  
    for i in range(3):
         list=[]
@@ -20,10 +20,9 @@ def inicio():
             if contador % 3 == 0:
                 resultado.append(list.copy())  # no queda referenciada
 
-inicio()
 
 # 2.Pinta Tablas nuevas despues de cada jugada
-def pinta():
+def Pinta():
     for fila in range(len(resultado)):
         print("+-------+-------+-------+")
         print("|       |       |       |")
@@ -31,22 +30,22 @@ def pinta():
         print("|       |       |       |")
     print("+-------+-------+-------+")
 
-pinta()
 
 #3.Aquí se pregunta al usuario la jugada y se evalua si se puede
-def jugada():
+def Jugar(jugada):
+    global intento
     intento = False
     jugada += 1
-    index
-    pos
+    global index
+    global pos
 
     # 3.1 esta funcion evalua si el numero introducido por ususario es correcto
-    def check(numero):
-        indice
-        posicion
+    def Check(numero):
+        global indice
+        global posicion
         for i in range(len(resultado)):
             for j in range(len(resultado[i])):#va uno por uno
-                if resultado[i][j]== numero:#si existe el numero en el juego
+                if resultado[i][j] == numero:#si existe el numero en el juego
                     indice= i
                     posicion = j
                     intento = True #si sirve el numero para la jugada
@@ -59,21 +58,21 @@ def jugada():
 
         if jugada % 2 == 0: #Si el numero es par, juega usuario
             varJugador = "O"
-            lugar = input ("\nIngresa tu movimiento: ")
-            index,pos,intento = check(lugar)
+            lugar = int(input ("\nIngresa tu movimiento: "))
+            index,pos,intento = Check(lugar)
 
         else:
             varJugador = "X"
             lugar= randrange(1,9)
             print(f"el pc eligió {lugar}")
-            index,pos,intento = check(lugar)
+            index,pos,intento = Check(lugar)
     
     #3.2. Modificará el resultado cuando salga del while
     resultado[index][pos]= varJugador 
 #falta check
 
 #4. Evaluación de la Jugada (Ver si existe un ganador)
-def evaluacion():
+def Evaluacion():
     #4.1 Análisis Horizontal
     contador = 0
     for i in range(len(resultado)): # Recorremos cada fila
@@ -83,7 +82,7 @@ def evaluacion():
                 print(f"Jugada Horizontal:{contador}")
             
             if contador == 3:
-                winner = "¡Has Ganado!"
+                winner = "¡Ganador!"
                 return winner #Sale de def evaluacion
             
         contador = 0 #esto analizara la proxima fila 
@@ -98,7 +97,7 @@ def evaluacion():
                 print(f"Jugada Vertical:{contador}")
 
             if contador == 3:
-                winner = "¡Has Ganado!"
+                winner = "¡Ganador!"
                 return winner #Sale de def evaluacion
             
         contador = 0 #esto analizara la proxima fila 
@@ -112,7 +111,7 @@ def evaluacion():
                 print(f"Jugada Diagonal1:{contador}")
                 
                 if contador == 3:
-                    winner = "¡Has Ganado!"
+                    winner = "Ganador"
                     return winner #Sale de def evaluacion
             
     #4.4 Análisis Diagonal2 mas parecidas entre ellas y LA HORIZONTAL Y VERTICAL JUNTAS
@@ -124,17 +123,34 @@ def evaluacion():
                 print(f"Jugada Diagonal2:{contador}")
                 
                 if contador == 3:
-                    winner = "¡Has Ganado!"
+                    winner = "Ganador"
                     return winner #Sale de def evaluacion
                 
     #4.5 Chequedo de Empate
-    for fila in range(len(resultado)): # Recorremos cada fila por índice
-        for col in range(len(resultado[fila])):# osea 3 casillas horizontales
-            if col != "X" and col != "O" #Si es un número
-                winner = "nadie"
-                return winner #"nadie"
+    for fila in range(len(resultado)):  # Recorremos cada fila por índice
+        for col in range(len(resultado[fila])):  # o sea 3 casillas horizontales
+          if (resultado[fila][col] != "X" and resultado[fila][col] != "O"):  # Si es un número
+                winner = "Nadie"
+                return winner  # "Nadie"
     
     winner = "Empate"        
     return winner
         
         
+#¡LETS PLAY!
+
+Inicio()
+Pinta()
+jugada = 1
+
+while winner == "Nadie":
+    Jugar(jugada)
+    Pinta()
+    winner = Evaluacion()
+    jugada +=1
+
+
+if winner == "Ganador":
+    print("\nFelicidades Has Ganado")
+elif winner == "Empate":
+    print("\nEmpatarooon")
