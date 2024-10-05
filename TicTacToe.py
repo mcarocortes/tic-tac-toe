@@ -1,13 +1,11 @@
 from random import randrange
-varJugador = "X"
-lugar = 5
 winner = "Nadie"
 resultado = []
-
-
+lugar = 5
 
 # 1.Pinta tablero Inicial: Crea Tabla resultado
-def Inicio():  
+def Inicio():
+   varJugador= "X"
    contador = 0  
    for i in range(3):
         list=[]
@@ -31,45 +29,41 @@ def Pinta():
     print("+-------+-------+-------+")
 
 
-#3.Aquí se pregunta al usuario la jugada y se evalua si se puede
+# 3.Aquí se pregunta al usuario la jugada y se evalua si se puede
 def Jugar(jugada):
     global intento
     intento = False
     jugada += 1
-    global index
-    global pos
+
+    global varJugador
+
+
 
     # 3.1 esta funcion evalua si el numero introducido por ususario es correcto
     def Check(numero):
-        global indice
-        global posicion
         for i in range(len(resultado)):
-            for j in range(len(resultado[i])):#va uno por uno
-                if resultado[i][j] == numero:#si existe el numero en el juego
-                    indice= i
-                    posicion = j
-                    intento = True #si sirve el numero para la jugada
-                    return (indice,posicion,intento)# se sale de la f(x)
+            for j in range(len(resultado[i])):  # va uno por uno
+                if resultado[i][j] == numero:  # si existe el numero en el juego
+                    return (i, j, True)  # devuelve la posición y True
+        return (-1, -1, False)  # Devuelve valores por defecto si no se encuentra el número
                 
-        return (indice,posicion,intento) #intento sigue siendo false
-
-    #3.2 Solicitud de informacion y/o numero random
+    # 3.2 Solicitud de información y/o número random
     while intento == False:
-
-        if jugada % 2 == 0: #Si el numero es par, juega usuario
+        if jugada % 2 == 0:  # Si el número es par, juega el usuario
             varJugador = "O"
-            lugar = int(input ("\nIngresa tu movimiento: "))
-            index,pos,intento = Check(lugar)
-
+            lugar = int(input("\nIngresa tu movimiento: "))
+            indice, posicion, intento = Check(lugar)
         else:
             varJugador = "X"
-            lugar= randrange(1,9)
-            print(f"el pc eligió {lugar}")
-            index,pos,intento = Check(lugar)
-    
-    #3.2. Modificará el resultado cuando salga del while
-    resultado[index][pos]= varJugador 
-#falta check
+            lugar = randrange(1, 10)  # Cambié a 10 para incluir el 9
+            print(f"El PC eligió {lugar}")
+            indice, posicion, intento = Check(lugar)
+
+        if intento == False:
+            print("Movimiento inválido. Intenta de nuevo.")
+
+    # 3.3 Modificará el resultado cuando salga del while
+    resultado[indice][posicion] = varJugador
 
 #4. Evaluación de la Jugada (Ver si existe un ganador)
 def Evaluacion():
@@ -82,7 +76,7 @@ def Evaluacion():
                 print(f"Jugada Horizontal:{contador}")
             
             if contador == 3:
-                winner = "¡Ganador!"
+                winner = "Ganador"
                 return winner #Sale de def evaluacion
             
         contador = 0 #esto analizara la proxima fila 
@@ -97,7 +91,7 @@ def Evaluacion():
                 print(f"Jugada Vertical:{contador}")
 
             if contador == 3:
-                winner = "¡Ganador!"
+                winner = "Ganador"
                 return winner #Sale de def evaluacion
             
         contador = 0 #esto analizara la proxima fila 
@@ -118,7 +112,7 @@ def Evaluacion():
     contador = 0
     for i in range(len(resultado)): # Recorremos cada fila por índice
         for j in range(len(resultado[i])):# osea 3 casillas horizontales
-            if (i+j == 2) and (resultado[i][j] == "x"): #resultado[0][0], resultado[1]][1], resultado[2][2] tienen x
+            if (i+j == 2) and (resultado[i][j] == varJugador): #resultado[0][0], resultado[1]][1], resultado[2][2] tienen x
                 contador +=1
                 print(f"Jugada Diagonal2:{contador}")
                 
@@ -143,7 +137,10 @@ Inicio()
 Pinta()
 jugada = 1
 
+
+
 while winner == "Nadie":
+
     Jugar(jugada)
     Pinta()
     winner = Evaluacion()
@@ -151,6 +148,6 @@ while winner == "Nadie":
 
 
 if winner == "Ganador":
-    print("\nFelicidades Has Ganado")
+    print(f"\nFelicidades jugador {varJugador} Has Ganado")
 elif winner == "Empate":
     print("\nEmpatarooon")
